@@ -6,10 +6,14 @@ require 'silverware'
 Settings.use :commandline
 Settings({
   homebase_dir: Dir.pwd,
-  node_name: '*',
+  node: '*',
 })
-Settings.define :homebase_dir, flag: 'h', description: 'Directory of the Chef homebase'
-Settings.define :node_name, flag: 'n', description: 'Description of chef node(s) to test'
+Settings.define :homebase_dir, flag: 'd', description: 'Directory of the Chef homebase'
+Settings.define :node, description: 'Description of chef node(s) to test'
 Settings.resolve!
+
+if Settings.rest.length == 1
+  Settings[:node] = Settings.rest[0]
+end
 
 p Settings
