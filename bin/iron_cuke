@@ -2,4 +2,14 @@
 $: << File.dirname(__FILE__)+'/../lib'
 require 'silverware'
 
-puts 'hello world'
+# configliere
+Settings.use :commandline
+Settings({
+  homebase_dir: Dir.pwd,
+  node_name: '*',
+})
+Settings.define :homebase_dir, flag: 'h', description: 'Directory of the Chef homebase'
+Settings.define :node_name, flag: 'n', description: 'Description of chef node(s) to test'
+Settings.resolve!
+
+p Settings
