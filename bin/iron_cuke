@@ -16,4 +16,15 @@ if Settings.rest.length == 1
   Settings[:node] = Settings.rest[0]
 end
 
-p Settings
+Dir.chdir(Settings[:homebase_dir])
+puts "Getting Chef data..."
+JSON.create_id = nil
+json = JSON.parse(`knife search node -f json "name:#{Settings[:node]}"`)
+
+if json['results'] == 0
+  puts "Chef search returned no results. Exiting..."
+  exit
+end
+
+json['rows'].each do |row|
+

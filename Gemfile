@@ -2,6 +2,8 @@
 source "https://rubygems.org"
 gem 'gorillib', :git => 'https://github.com/infochimps-labs/gorillib', :branch => 'version_1'
 gem 'configliere'
+gem 'json'
+gem 'chef'
 
 group :development do
   gem 'bundler',     "~> 1.1"
