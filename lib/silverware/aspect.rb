@@ -10,7 +10,6 @@ module Silverware
 
     # field :monitor, PortMonitorHint
 
-
     def num
       self.port
     end

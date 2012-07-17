@@ -1,3 +1,5 @@
+require 'configliere'
+
 require 'gorillib'
 require 'gorillib/model'
 require 'gorillib/collection'
