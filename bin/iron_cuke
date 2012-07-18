@@ -1,14 +1,16 @@
 #!/usr/bin/env ruby
 $: << File.dirname(__FILE__)+'/../lib'
-require 'silverware'
+require 'iron_cuke'
 
 # configliere
 Settings.use :commandline
 Settings({
-  homebase_dir: Dir.pwd,
+  knife_config: [Dir.pwd,'knife','knife.rb'].join('/'),
   node: '*',
+  output_dir: File.dirname(__FILE__)+'/../features'
 })
-Settings.define :homebase_dir, flag: 'd', description: 'Directory of the Chef homebase'
+Settings.define :knife_config, flag: 'k', description: 'Directory of the Chef homebase'
+Settings.define :output_dir, flag: 'o', description: 'Directory to store the generated cucumber features'
 Settings.define :node, description: 'Description of chef node(s) to test'
 Settings.resolve!
 
@@ -16,15 +18,15 @@ if Settings.rest.length == 1
   Settings[:node] = Settings.rest[0]
 end
 
-Dir.chdir(Settings[:homebase_dir])
-puts "Getting Chef data..."
-JSON.create_id = nil
-json = JSON.parse(`knife search node -f json "name:#{Settings[:node]}"`)
-
-if json['results'] == 0
-  puts "Chef search returned no results. Exiting..."
-  exit
+nodes = []
+Chef::Config.from_file(Settings[:knife_config])
+query = Chef::Search::Query.new
+query.search(:node,"name:#{Settings[:node]}") do |node|
+  nodes << ModelFactory.generate_model(node)
 end
 
-json['rows'].each do |row|
+nodes.each do |node|
+  TestWriter.render(node,Settings[:output_dir])
+end
+
 

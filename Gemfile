@@ -1,9 +1,11 @@
 # A sample Gemfile
 source "https://rubygems.org"
-gem 'gorillib', :git => 'https://github.com/infochimps-labs/gorillib', :branch => 'version_1'
+
+gem 'gorillib', :path => '../gorillib'
 gem 'configliere'
 gem 'json'
 gem 'chef'
+gem 'erubis'
 
 group :development do
   gem 'bundler',     "~> 1.1"

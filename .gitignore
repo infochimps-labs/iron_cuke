@@ -48,7 +48,7 @@ pkg
 .vendor
 
 ## PROJECT::SPECIFIC
-
+features/*
 Gemfile.lock
 .rvmrc
 .rbenv-version
