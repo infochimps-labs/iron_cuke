@@ -14,8 +14,8 @@ module Silverware
     field :sys,       Symbol, position: 0
     field :subsys,    Symbol, position: 1
     field :realm,     Symbol
+    field :server,     Symbol
     field :timestamp, String,         default: ->{ self.class.timestamp }
-    
     field :ports,     PortCollection, default: ->{ PortCollection.new(self) }
 
     # A segmented name for the component, including realm

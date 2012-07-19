@@ -7,6 +7,7 @@ module ModelFactory
     if node[:announces]
       node[:announces].values.each do |announcement|
         comp = ::Silverware::Component.receive(announcement.to_hash)
+        comp.server = node.name
         server.components << comp
       end
     end 
