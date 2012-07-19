@@ -2,7 +2,7 @@ module Proctor
 
   PROCTORS = Set.new
 
-  def self.render(server, outdir)
+  def self.write_tests(server, outdir)
     server_dir = [outdir, server.name].join('/')
     server.components.each do |component|
       comp_dir = [server_dir, component.fullname].join('/')

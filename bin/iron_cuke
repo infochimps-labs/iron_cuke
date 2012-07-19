@@ -22,5 +22,6 @@ nodes = []
 Chef::Config.from_file(Settings[:knife_config])
 query = Chef::Search::Query.new
 query.search(:node,"name:#{Settings[:node]}") do |node|
-  Proctor.render(ModelFactory.generate_model(node),Settings[:output_dir])
+  nodes << ModelFactory.generate_model(node)
+  Proctor.write_tests(nodes.last,Settings[:output_dir])
 end
