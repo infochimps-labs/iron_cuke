@@ -22,11 +22,11 @@ Settings.define :test_dir, flag: 't', description: 'Directory to store the gener
 Settings.define :node, flag: 'n', description: 'Description of chef node(s) to test'
 Settings.resolve!
 
-case Settings.command_name
-when :converge
+def converge
   `knife cluster vagrant up #{Settings[:node]} -c #{Settings[:knife_config]}`
+end
 
-when :gen_tests
+def gen_tests
   nodes = []
   Chef::Config.from_file(Settings[:knife_config])
   query = Chef::Search::Query.new
@@ -34,12 +34,26 @@ when :gen_tests
     nodes << ModelFactory.generate_model(node)
     Proctor.write_tests(nodes.last,Settings[:output_dir])
   end
+end
 
-when :judge
+def judge
+end
 
-when :destroy
+def destroy
   `knife cluster vagrant destroy #{Settings[:node]} -c #{Settings[:knife_config]}`
+end
 
+case Settings.command_name
+when :test
+  converge; gen_tests; judge; destroy;
+when :converge
+  converge
+when :gen_tests
+  gen_tests
+when :judge
+  judge
+when :destroy
+  destroy
 else
   Settings.die "Please use one of the given commands"
 end
