@@ -4,24 +4,42 @@ require 'iron_cuke'
 
 # configliere
 Settings.use :commandline
+Settings.use :commands
+
+Settings.define_command :test,      :description => "Execute entire test flow"
+Settings.define_command :converge,  :description => "Spin up a VM and watch chef-client run to convergence"
+Settings.define_command :gen_tests, :description => "Generate cucumber tests"
+Settings.define_command :judge,     :description => "Execute cucumber tests on the VM"
+Settings.define_command :destroy,   :description => "Bring down the VM"
+
 Settings({
   knife_config: [Dir.pwd,'knife','knife.rb'].join('/'),
-  node: '*',
-  output_dir: File.dirname(__FILE__)+'/../features'
+  node: 'el_ridiculoso-pequeno-0',
+  test_dir: File.dirname(__FILE__)+'/../features'
 })
 Settings.define :knife_config, flag: 'k', description: 'Directory of the Chef homebase'
-Settings.define :output_dir, flag: 'o', description: 'Directory to store the generated cucumber features'
-Settings.define :node, description: 'Description of chef node(s) to test'
+Settings.define :test_dir, flag: 't', description: 'Directory to store the generated cucumber features'
+Settings.define :node, flag: 'n', description: 'Description of chef node(s) to test'
 Settings.resolve!
 
-if Settings.rest.length == 1
-  Settings[:node] = Settings.rest[0]
-end
+case Settings.command_name
+when :converge
+  `knife cluster vagrant up #{Settings[:node]} -c #{Settings[:knife_config]}`
 
-nodes = []
-Chef::Config.from_file(Settings[:knife_config])
-query = Chef::Search::Query.new
-query.search(:node,"name:#{Settings[:node]}") do |node|
-  nodes << ModelFactory.generate_model(node)
-  Proctor.write_tests(nodes.last,Settings[:output_dir])
+when :gen_tests
+  nodes = []
+  Chef::Config.from_file(Settings[:knife_config])
+  query = Chef::Search::Query.new
+  query.search(:node,"name:#{Settings[:node]}") do |node|
+    nodes << ModelFactory.generate_model(node)
+    Proctor.write_tests(nodes.last,Settings[:output_dir])
+  end
+
+when :judge
+
+when :destroy
+  `knife cluster vagrant destroy #{Settings[:node]} -c #{Settings[:knife_config]}`
+
+else
+  Settings.die "Please use one of the given commands"
 end
