@@ -2,6 +2,7 @@ require 'configliere'
 
 require 'json'
 require 'chef'
+require 'pathname'
 
 require 'gorillib'
 require 'gorillib/model'

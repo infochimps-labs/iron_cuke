@@ -31,6 +31,7 @@ Settings.define :announces, flag: 'a', description: 'File containing JSON announ
 Settings.resolve!
 
 def retrieve_announces
+  puts "Retrieving announcements from the chef server and depositing them in '#{Settings[:announces]}'..."
   Chef::Config.from_file(Settings[:knife_config])
   query = Chef::Search::Query.new
   nodes = {results: 0, rows: []}
@@ -42,6 +43,7 @@ def retrieve_announces
 end
 
 def gen_tests
+  puts "Generating tests from announcements at '#{Settings[:announces]}' and depositing them in '#{Settings[:test_dir]}'..."
   announces = File.open(Settings[:announces],'r')
   nodes = JSON.parse(announces.read)
   nodes['rows'].each do |node|
@@ -51,23 +53,21 @@ def gen_tests
 end
 
 def judge
+  puts "Unleashing storms of judgement..."
+  cuke_dir = Pathname.new(Settings[:test_dir]).parent
+  Dir.chdir(cuke_dir.to_s)
+  system 'bundle exec cucumber'
 end
 
 case Settings.command_name
 when :test
-  if Settings[:retrieve_announces] or not File.exists?(Settings[:announces])
-    puts "Retrieving announcements from the chef server and depositing them in '#{Settings[:announces]}'..."
-    retrieve_announces
-  end
+  retrieve_announces if Settings[:retrieve_announces] or not File.exists?(Settings[:announces])
   gen_tests; judge;
 when :learn
-  puts "Retrieving announcements from the chef server and depositing them in '#{Settings[:announces]}'..."
   retrieve_announces
 when :gen_tests
-  puts "Generating tests from announcements at '#{Settings[:announces]}' and depositing them in '#{Settings[:test_dir]}'..."
   gen_tests
 when :judge
-  puts "Judging..."
   judge
 else
   Settings.die "Please use one of the given commands"
