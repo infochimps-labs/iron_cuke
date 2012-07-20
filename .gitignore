@@ -48,6 +48,7 @@ pkg
 .vendor
 
 ## PROJECT::SPECIFIC
+announces.json
 features/*
 Gemfile.lock
 .rvmrc

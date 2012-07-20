@@ -7,53 +7,68 @@ Settings.use :commandline
 Settings.use :commands
 
 Settings.define_command :test,      :description => "Execute entire test flow"
-Settings.define_command :converge,  :description => "Spin up a VM and watch chef-client run to convergence"
+Settings.define_command :learn,     :description => "Retrieve node announcements from the Chef server"
 Settings.define_command :gen_tests, :description => "Generate cucumber tests"
 Settings.define_command :judge,     :description => "Execute cucumber tests on the VM"
-Settings.define_command :destroy,   :description => "Bring down the VM"
 
 Settings({
-  knife_config: [Dir.pwd,'knife','knife.rb'].join('/'),
-  node: 'el_ridiculoso-pequeno-0',
-  test_dir: File.dirname(__FILE__)+'/../features'
+  knife_config: "#{Dir.pwd}/knife/knife.rb",
+  node: '*',
+  test_dir: File.dirname(__FILE__)+'/../features',
+  announces: File.dirname(__FILE__)+'/../announces.json',
+  retrieve_announces: false,
 })
+
+#test
+Settings.define :retrieve_announces, flag: 'r', description: 'Ironcuke will retrieve announcements from the Chef server', type: :boolean
+#learn
 Settings.define :knife_config, flag: 'k', description: 'Directory of the Chef homebase'
-Settings.define :test_dir, flag: 't', description: 'Directory to store the generated cucumber features'
 Settings.define :node, flag: 'n', description: 'Description of chef node(s) to test'
+#gen_tests
+Settings.define :test_dir, flag: 't', description: 'Directory to store the generated cucumber features'
+Settings.define :announces, flag: 'a', description: 'File containing JSON announcements'
+
 Settings.resolve!
 
-def converge
-  `knife cluster vagrant up #{Settings[:node]} -c #{Settings[:knife_config]}`
+def retrieve_announces
+  Chef::Config.from_file(Settings[:knife_config])
+  query = Chef::Search::Query.new
+  nodes = {results: 0, rows: []}
+  query.search(:node,"name:#{Settings[:node]}") do |node|
+    nodes[:rows] << node
+    nodes[:results]+=1
+  end
+  File.open(Settings[:announces], 'w') {|f| f.write(nodes.to_json)}
 end
 
 def gen_tests
-  nodes = []
-  Chef::Config.from_file(Settings[:knife_config])
-  query = Chef::Search::Query.new
-  query.search(:node,"name:#{Settings[:node]}") do |node|
-    nodes << ModelFactory.generate_model(node)
-    Proctor.write_tests(nodes.last,Settings[:output_dir])
+  announces = File.open(Settings[:announces],'r')
+  nodes = JSON.parse(announces.read)
+  nodes['rows'].each do |node|
+    model = ModelFactory.generate_model(node)
+    Proctor.write_tests(model,Settings[:test_dir])
   end
 end
 
 def judge
 end
 
-def destroy
-  `knife cluster vagrant destroy #{Settings[:node]} -c #{Settings[:knife_config]}`
-end
-
 case Settings.command_name
 when :test
-  converge; gen_tests; judge; destroy;
-when :converge
-  converge
+  if Settings[:retrieve_announces] or not File.exists?(Settings[:announces])
+    puts "Retrieving announcements from the chef server and depositing them in '#{Settings[:announces]}'..."
+    retrieve_announces
+  end
+  gen_tests; judge;
+when :learn
+  puts "Retrieving announcements from the chef server and depositing them in '#{Settings[:announces]}'..."
+  retrieve_announces
 when :gen_tests
+  puts "Generating tests from announcements at '#{Settings[:announces]}' and depositing them in '#{Settings[:test_dir]}'..."
   gen_tests
 when :judge
+  puts "Judging..."
   judge
-when :destroy
-  destroy
 else
   Settings.die "Please use one of the given commands"
 end
