@@ -41,7 +41,7 @@ def retrieve_announces
   query = Chef::Search::Query.new
   nodes = {}
   query.search(:node,"name:#{Settings[:node]}") do |node|
-    nodes[node.name] = node['announces']
+    nodes[node.name] = node['announces'].to_hash unless node['announces'].nil?
   end
   File.open(Settings[:announces_file], 'w') {|f| f.write(nodes.to_json)}
 end
@@ -49,9 +49,9 @@ end
 def gen_tests
   puts "Generating tests from announcements at '#{Settings[:announces_file]}' and depositing them in '#{Settings[:test_dir]}'..."
   announces = File.open(Settings[:announces_file],'r')
-  nodes = JSON.parse(announces.read)
-  nodes['rows'].each do |node|
-    model = ModelFactory.generate_model(node)
+  servers = JSON.parse(announces.read)
+  servers.keys.each do |server_name|
+    model = ModelFactory.generate_model(server_name,servers[server_name])
     Proctor.write_tests(model,Settings[:test_dir])
   end
 end
