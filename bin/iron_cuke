@@ -15,36 +15,40 @@ Settings({
   knife_config: "#{Dir.pwd}/knife/knife.rb",
   node: '*',
   test_dir: File.dirname(__FILE__)+'/../features',
-  announces: File.dirname(__FILE__)+'/../announces.json',
+  announces_file: File.dirname(__FILE__)+'/../announces.json',
   retrieve_announces: false,
 })
 
 #test
 Settings.define :retrieve_announces, flag: 'r', description: 'Ironcuke will retrieve announcements from the Chef server', type: :boolean
 #learn
-Settings.define :knife_config, flag: 'k', description: 'Directory of the Chef homebase'
+Settings.define :knife_config, flag: 'k', description: 'Location of knife config'
 Settings.define :node, flag: 'n', description: 'Description of chef node(s) to test'
 #gen_tests
 Settings.define :test_dir, flag: 't', description: 'Directory to store the generated cucumber features'
-Settings.define :announces, flag: 'a', description: 'File containing JSON announcements'
+Settings.define :announces_file, flag: 'a', description: 'File containing JSON announcements'
 
 Settings.resolve!
 
+#get absolute paths
+Settings[:announces_file] = File.expand_path(Settings[:announces_file])
+Settings[:test_dir] = File.expand_path(Settings[:test_dir])
+Settings[:knife_config] = File.expand_path(Settings[:knife_config])
+
 def retrieve_announces
-  puts "Retrieving announcements from the chef server and depositing them in '#{Settings[:announces]}'..."
+  puts "Retrieving announcements from the chef server and depositing them in '#{Settings[:announces_file]}'..."
   Chef::Config.from_file(Settings[:knife_config])
   query = Chef::Search::Query.new
-  nodes = {results: 0, rows: []}
+  nodes = {}
   query.search(:node,"name:#{Settings[:node]}") do |node|
-    nodes[:rows] << node
-    nodes[:results]+=1
+    nodes[node.name] = node['announces']
   end
-  File.open(Settings[:announces], 'w') {|f| f.write(nodes.to_json)}
+  File.open(Settings[:announces_file], 'w') {|f| f.write(nodes.to_json)}
 end
 
 def gen_tests
-  puts "Generating tests from announcements at '#{Settings[:announces]}' and depositing them in '#{Settings[:test_dir]}'..."
-  announces = File.open(Settings[:announces],'r')
+  puts "Generating tests from announcements at '#{Settings[:announces_file]}' and depositing them in '#{Settings[:test_dir]}'..."
+  announces = File.open(Settings[:announces_file],'r')
   nodes = JSON.parse(announces.read)
   nodes['rows'].each do |node|
     model = ModelFactory.generate_model(node)
@@ -61,7 +65,7 @@ end
 
 case Settings.command_name
 when :test
-  retrieve_announces if Settings[:retrieve_announces] or not File.exists?(Settings[:announces])
+  retrieve_announces if Settings[:retrieve_announces] or not File.exists?(Settings[:announces_file])
   gen_tests; judge;
 when :learn
   retrieve_announces
