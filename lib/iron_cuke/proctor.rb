@@ -7,7 +7,7 @@ module Proctor
     server.components.each do |component|
       comp_dir = [server_dir, component.fullname].join('/')
       Proctor::PROCTORS.each do |proctor|
-        p "Rendering template for #{server.name} - #{component.fullname}"
+        puts "Rendering template for #{server.name} - #{component.fullname}"
         proctor.write_test(component,comp_dir) 
       end
     end
