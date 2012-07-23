@@ -1,8 +1,6 @@
 source "https://rubygems.org"
 
-gem 'bundler',     "~> 1.1"
 gem 'configliere'
-gem 'json'
 
 group :get_announces do
   gem 'chef'
