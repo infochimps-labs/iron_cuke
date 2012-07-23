@@ -1,16 +1,14 @@
 require 'pp'
 module ModelFactory
 
-  def self.generate_model(node)
+  def self.generate_model(name,announces)
     server = ::Silverware::Server.new
-    server.name = node.name
-    if node[:announces]
-      node[:announces].values.each do |announcement|
-        comp = ::Silverware::Component.receive(announcement.to_hash)
-        comp.server = node.name
-        server.components << comp
-      end
-    end 
+    server.name = name
+    announces.values.each do |announcement|
+      comp = ::Silverware::Component.receive(announcement.to_hash)
+      comp.server = name
+      server.components << comp
+    end
     return server
   end
 end
