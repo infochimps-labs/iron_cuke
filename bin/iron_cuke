@@ -70,7 +70,11 @@ end
 
 def clean_announces
   puts "Deleting announces cache at '#{Settings[:announces_file]}'..."
-  File.delete(Settings[:announces_file]) rescue
+  begin
+    File.delete(Settings[:announces_file]) 
+  rescue Errno::ENOENT
+    puts "'#{Settings[:announces_file]}' doesn't exist. Skipping..."
+  end
 end
 
 def clean_tests
@@ -85,13 +89,18 @@ end
 def clean
   clean_announces
   clean_tests
-  puts "All clean!"
+  puts 'All clean!'
 end
 
 case Settings.command_name
 when :test
-  retrieve_announces if Settings[:retrieve_announces] or not File.exists?(Settings[:announces_file])
-  gen_tests; judge;
+  if Settings[:retrieve_announces] or not File.exists?(Settings[:announces_file])
+    clean_announces
+    retrieve_announces
+  end
+  clean_tests
+  gen_tests
+  judge
 when :learn
   clean_announces
   retrieve_announces
