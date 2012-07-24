@@ -1,10 +1,14 @@
+# A proctor is a class responsible for rendering
+# cucumber tests from gorillib models of announcements
 module Proctor
+
   # list of all available proctors
   PROCTORS = Set.new
 
   # Iterates over all components in the server
   # and lets each proctor have a chance to render tests
-  # for each component.
+  # for the component. Tests will be deposited in 
+  # outdir/server-name/component-name/aspect.feature
   def self.write_tests(server, outdir)
     server_dir = [outdir, server.name].join('/')
     server.components.each do |component|
