@@ -68,15 +68,23 @@ def judge
   end
 end
 
-def clean
+def clean_announces
   puts "Deleting announces cache at '#{Settings[:announces_file]}'..."
   File.delete(Settings[:announces_file]) rescue
+end
+
+def clean_tests
   puts "Removing generated tests from '#{Settings[:test_dir]}'..."
   Dir.foreach(Settings[:test_dir]) do |dir|
     path = Pathname.new(Settings[:test_dir]) + dir
     next if dir == '.' or dir == '..' or dir == 'support' or not path.directory?
     FileUtils.rm_rf(path)
   end
+end
+
+def clean
+  clean_announces
+  clean_tests
   puts "All clean!"
 end
 
@@ -85,8 +93,10 @@ when :test
   retrieve_announces if Settings[:retrieve_announces] or not File.exists?(Settings[:announces_file])
   gen_tests; judge;
 when :learn
+  clean_announces
   retrieve_announces
 when :gen_tests
+  clean_tests
   gen_tests
 when :judge
   judge
