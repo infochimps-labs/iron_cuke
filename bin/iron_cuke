@@ -60,7 +60,11 @@ def judge
   puts "Unleashing storms of judgement..."
   cuke_dir = Pathname.new(Settings[:test_dir]).parent
   Dir.chdir(cuke_dir.to_s)
-  system 'bundle exec cucumber'
+  tests_passed = system 'bundle exec cucumber'
+  if tests_passed.nil? or not tests_passed
+    puts "Error running tests..."
+    exit 1
+  end
 end
 
 case Settings.command_name
