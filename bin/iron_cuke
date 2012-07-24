@@ -9,6 +9,7 @@ Settings.use :commands
 Settings.define_command :test,      :description => "Execute entire test flow"
 Settings.define_command :learn,     :description => "Retrieve node announcements from the Chef server"
 Settings.define_command :gen_tests, :description => "Generate cucumber tests"
+Settings.define_command :clean,     :description => "Removes all cached data and tests"
 Settings.define_command :judge,     :description => "Execute cucumber tests on the VM"
 
 Settings({
@@ -67,6 +68,18 @@ def judge
   end
 end
 
+def clean
+  puts "Deleting announces cache at '#{Settings[:announces_file]}'..."
+  File.delete(Settings[:announces_file]) rescue
+  puts "Removing generated tests from '#{Settings[:test_dir]}'..."
+  Dir.foreach(Settings[:test_dir]) do |dir|
+    path = Pathname.new(Settings[:test_dir]) + dir
+    next if dir == '.' or dir == '..' or dir == 'support' or not path.directory?
+    FileUtils.rm_rf(path)
+  end
+  puts "All clean!"
+end
+
 case Settings.command_name
 when :test
   retrieve_announces if Settings[:retrieve_announces] or not File.exists?(Settings[:announces_file])
@@ -77,6 +90,8 @@ when :gen_tests
   gen_tests
 when :judge
   judge
+when :clean
+  clean
 else
   Settings.die "Please use one of the given commands"
 end
