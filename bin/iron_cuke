@@ -65,6 +65,8 @@ def judge
   if tests_passed.nil? or not tests_passed
     puts "Error running tests..."
     exit 1
+  else
+    puts "All tests passed! Clouds clearing..."
   end
 end
 
