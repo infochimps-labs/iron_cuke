@@ -1,5 +1,5 @@
 module Proctor
-  class PortProctor < CollectionProctor
+  class DaemonProctor < CollectionProctor
     self.register_proctor
   end
 end

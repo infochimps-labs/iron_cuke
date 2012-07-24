@@ -7,7 +7,7 @@ module Proctor
     server.components.each do |component|
       comp_dir = [server_dir, component.fullname].join('/')
       Proctor::PROCTORS.each do |proctor|
-        puts "Rendering template for #{server.name} - #{component.fullname}"
+        puts "Rendering template for #{server.name} - #{component.fullname} : #{proctor.aspect_handle} aspect"
         proctor.write_test(component,comp_dir) 
       end
     end
@@ -41,6 +41,10 @@ module Proctor
     def aspect_handle
       @aspect_handle ||= "#{super}s".to_sym
     end
+
+    def write_test(component,outdir)
+      return if component.send(aspect_handle.to_sym).values.empty?
+      super(component,outdir)
+    end
   end
 end
-

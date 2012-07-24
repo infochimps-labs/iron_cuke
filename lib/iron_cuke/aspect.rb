@@ -15,7 +15,10 @@ module Silverware
     end
   end
 
-  class DaemonAspect
+  class DaemonAspect < Aspect
+    field :name, String
+    field :user, String
+    field :cmd,  String
   end
 
   class LogAspect
@@ -33,4 +36,15 @@ module Silverware
     end
   end
 
+  class DaemonCollection < Gorillib::ModelCollection
+    include Gorillib::Collection::CommonAttrs
+    self.item_type = Silverware::DaemonAspect
+    attr_reader :component
+
+    def initialize(component, options={})
+      super(options)
+      @component = component
+      @common_attrs = common_attrs.merge(component: component)
+    end
+  end
 end

@@ -15,8 +15,9 @@ module Silverware
     field :subsys,    Symbol, position: 1
     field :realm,     Symbol
     field :server,    Symbol
-    field :timestamp, String,         default: ->{ self.class.timestamp }
-    field :ports,     PortCollection, default: ->{ PortCollection.new(self) }
+    field :timestamp, String,           default: ->{ self.class.timestamp }
+    field :ports,     PortCollection,   default: ->{ PortCollection.new(self) }
+    field :daemons,   DaemonCollection, default: ->{ DaemonCollection.new(self) }
 
     # A segmented name for the component, including realm
     # @example
@@ -33,11 +34,22 @@ module Silverware
     def receive_ports(ports)
       ports.each do |label, port_info|
         if label.is_a?(Integer) or port_info.is_a?(Integer) then
-          warn "Bogus (numeric) port #{label} in #{self}; skipping"
+          warn "Bogus (numeric) port #{label} in #{self}; skipping..."
           next
         end
         port_aspect = PortAspect.receive(port_info.to_hash.merge(name: label))
         self.ports[label] = port_aspect
+      end
+    end
+
+    def receive_daemons(daemons)
+      daemons.each do |label,daemon_info|
+        if daemon_info.is_a?(String) then
+          warn "Badly formatted (String-only) daemon #{label} - #{daemon_info} in #{self}; skipping..."
+          next
+        end
+        daemon_aspect = DaemonAspect.receive(daemon_info.to_hash.merge(label: label))
+        self.daemons[label] = daemon_aspect
       end
     end
   end
