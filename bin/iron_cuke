@@ -7,11 +7,12 @@ Settings.use :commandline
 Settings.use :commands
 
 Settings.define_command :test,      :description => "Execute entire test flow"
+Settings.define_command :clean,     :description => "Removes all cached data and tests"
 Settings.define_command :learn,     :description => "Retrieve node announcements from the Chef server"
 Settings.define_command :gen_tests, :description => "Generate cucumber tests"
-Settings.define_command :clean,     :description => "Removes all cached data and tests"
 Settings.define_command :judge,     :description => "Execute cucumber tests on the VM"
 
+# defaults
 Settings({
   knife_config: "#{Dir.pwd}/knife/knife.rb",
   node: '*',
@@ -20,22 +21,26 @@ Settings({
   retrieve_announces: false,
 })
 
-#test
+# test
 Settings.define :retrieve_announces, flag: 'r', description: 'Ironcuke will retrieve announcements from the Chef server', type: :boolean
-#learn
+# learn
 Settings.define :knife_config, flag: 'k', description: 'Location of knife config'
 Settings.define :node, flag: 'n', description: 'Description of chef node(s) to test'
-#gen_tests
+# gen_tests
 Settings.define :test_dir, flag: 't', description: 'Directory to store the generated cucumber features'
 Settings.define :announces_file, flag: 'a', description: 'File containing JSON announcements'
 
 Settings.resolve!
 
-#get absolute paths
+# get absolute paths
 Settings[:announces_file] = File.expand_path(Settings[:announces_file])
 Settings[:test_dir] = File.expand_path(Settings[:test_dir])
 Settings[:knife_config] = File.expand_path(Settings[:knife_config])
 
+# Executes a chef search using the supplied config,
+# extracts the announcements, and deposits them in the
+# announces.json file. Will overwrite announces.json
+# if it is already present.
 def retrieve_announces
   puts "Retrieving announcements from the chef server and depositing them in '#{Settings[:announces_file]}'..."
   Chef::Config.from_file(Settings[:knife_config])
@@ -47,6 +52,8 @@ def retrieve_announces
   File.open(Settings[:announces_file], 'w') {|f| f.write(nodes.to_json)}
 end
 
+# Ingests announces.json and spits out cucumber tests
+# from the Proctors.
 def gen_tests
   puts "Generating tests from announcements at '#{Settings[:announces_file]}' and depositing them in '#{Settings[:test_dir]}'..."
   announces = File.open(Settings[:announces_file],'r')
@@ -57,6 +64,9 @@ def gen_tests
   end
 end
 
+# Executes all tests in the features directory.
+# Ironcuke will exit with a non-zero exit status
+# if the tests fail.
 def judge
   puts "Unleashing storms of judgement..."
   cuke_dir = Pathname.new(Settings[:test_dir]).parent
@@ -70,6 +80,7 @@ def judge
   end
 end
 
+# Deletes announces.json
 def clean_announces
   puts "Deleting announces cache at '#{Settings[:announces_file]}'..."
   begin
@@ -79,6 +90,7 @@ def clean_announces
   end
 end
 
+# Deletes all cucumber tests in the features directory
 def clean_tests
   puts "Removing generated tests from '#{Settings[:test_dir]}'..."
   Dir.foreach(Settings[:test_dir]) do |dir|
@@ -88,6 +100,7 @@ def clean_tests
   end
 end
 
+# Cleans all cached data
 def clean
   clean_announces
   clean_tests
