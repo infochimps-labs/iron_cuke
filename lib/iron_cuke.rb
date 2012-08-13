@@ -19,3 +19,6 @@ require 'iron_cuke/component'
 require 'iron_cuke/proctor'
 require 'iron_cuke/proctors/port_proctor'
 require 'iron_cuke/proctors/daemon_proctor'
+
+module IronCuke
+end
