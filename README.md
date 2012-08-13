@@ -1,4 +1,7 @@
 # Ironcuke - Coming Soon
+
+[![Build Status](https://secure.travis-ci.org/infochimps-labs/iron_cuke.png?branch=master)](http://travis-ci.org/infochimps-labs/iron_cuke)
+
 No-hassle testing for your infrastructure
 
 You use Chef to orchestrate your infrastructure. You have hundreds of lines of Chef code lying about in cookbooks, untested.
