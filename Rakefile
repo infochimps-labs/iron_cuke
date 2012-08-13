@@ -36,5 +36,11 @@ Jeweler::Tasks.new do |gem|
 Test your apps on the surface that matters: the interface they specify to the network
 EOF
   gem.executables = []
+
+  gem.add_dependency 'chef',     '>= 0.10.4'
+  gem.add_dependency 'gorillib', '>= 0.4'
+  gem.add_dependency 'erubis'
+  gem.add_dependency 'cucumber'
+  gem.add_dependency 'cuken'
 end
 Jeweler::RubygemsDotOrgTasks.new

@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "bin/iron_cuke",
     "features/support/env.rb",
+    "iron_cuke.gemspec",
     "lib/iron_cuke.rb",
     "lib/iron_cuke/aspect.rb",
     "lib/iron_cuke/base.rb",
@@ -53,6 +54,11 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rake>, [">= 0"])
       s.add_development_dependency(%q<yard>, [">= 0.7"])
       s.add_development_dependency(%q<jeweler>, [">= 1.6"])
+      s.add_runtime_dependency(%q<chef>, [">= 0.10.4"])
+      s.add_runtime_dependency(%q<gorillib>, [">= 0.4"])
+      s.add_runtime_dependency(%q<erubis>, [">= 0"])
+      s.add_runtime_dependency(%q<cucumber>, [">= 0"])
+      s.add_runtime_dependency(%q<cuken>, [">= 0"])
     else
       s.add_dependency(%q<configliere>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 2.8"])
@@ -60,6 +66,11 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rake>, [">= 0"])
       s.add_dependency(%q<yard>, [">= 0.7"])
       s.add_dependency(%q<jeweler>, [">= 1.6"])
+      s.add_dependency(%q<chef>, [">= 0.10.4"])
+      s.add_dependency(%q<gorillib>, [">= 0.4"])
+      s.add_dependency(%q<erubis>, [">= 0"])
+      s.add_dependency(%q<cucumber>, [">= 0"])
+      s.add_dependency(%q<cuken>, [">= 0"])
     end
   else
     s.add_dependency(%q<configliere>, [">= 0"])
@@ -68,6 +79,11 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rake>, [">= 0"])
     s.add_dependency(%q<yard>, [">= 0.7"])
     s.add_dependency(%q<jeweler>, [">= 1.6"])
+    s.add_dependency(%q<chef>, [">= 0.10.4"])
+    s.add_dependency(%q<gorillib>, [">= 0.4"])
+    s.add_dependency(%q<erubis>, [">= 0"])
+    s.add_dependency(%q<cucumber>, [">= 0"])
+    s.add_dependency(%q<cuken>, [">= 0"])
   end
 end
 
