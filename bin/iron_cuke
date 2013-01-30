@@ -47,7 +47,7 @@ def retrieve_announces
   query = Chef::Search::Query.new
   nodes = {}
   query.search(:node,"name:#{Settings[:node]}") do |node|
-    nodes[node.name] = node['announces'].to_hash unless node['announces'].nil?
+    nodes[node.name] = node.to_hash unless node['announces'].nil?
   end
   File.open(Settings[:announces_file], 'w') {|f| f.write(nodes.to_json)}
 end
