@@ -57,8 +57,7 @@ module Silverware
   class Server
     attr_accessor :name
     attr_accessor :components
-    attr_accessor :attributes
-
+    
     def initialize
       @components = []
       super
