@@ -5,7 +5,9 @@ Feature: Checking Ports
         
   Scenario: The proper ports are open
     Then these ports are open:
-      | port |
+      | port | host |
+   <%- # FIXME: Did the simplest thing that could work, here.  %>
+   <%- # Correct solution is to get hostname via announcement. %>
    <% @ports.each do |port| %>
-      | <%= port[:port] -%> |
+      | <%= port[:port] %> | <%= `hostname -f`.delete("\n") %> |
    <% end %>
