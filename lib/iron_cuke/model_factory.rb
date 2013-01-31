@@ -5,7 +5,7 @@ module ModelFactory
     server = ::Silverware::Server.new
     server.name = name
     server.attributes = attributes
-    attributes[:announces].values.each do |announcement|
+    attributes['announces'].values.each do |announcement|
       comp = ::Silverware::Component.receive(announcement.to_hash)
       comp.server = name
       server.components << comp
