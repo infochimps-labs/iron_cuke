@@ -28,7 +28,7 @@ module Silverware
     #
     # @return [String] the component's dotted name
     def fullname
-      return [self.sys,self.subsys].join('-')
+      return [self.sys, self.subsys].join('-')
     end
 
     def receive_ports(ports)
@@ -43,7 +43,7 @@ module Silverware
     end
 
     def receive_daemons(daemons)
-      daemons.each do |label,daemon_info|
+      daemons.each do |label, daemon_info|
         if daemon_info.is_a?(String) then
           warn "Badly formatted (String-only) daemon #{label} - #{daemon_info} in #{self}; skipping..."
           next

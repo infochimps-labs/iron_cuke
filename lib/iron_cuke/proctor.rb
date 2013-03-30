@@ -66,9 +66,9 @@ module Proctor
     # rendering the test if the collection is empty.
     # This may not work for all schemas. See PortProctor and
     # DaemonProctor for working examples.
-    def write_test(component,outdir)
+    def write_test(component, outdir)
       return if component.send(aspect_handle.to_sym).values.empty?
-      super(component,outdir)
+      super(component, outdir)
     end
   end
 end
