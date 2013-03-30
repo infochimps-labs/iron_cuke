@@ -60,7 +60,7 @@ def gen_tests
   servers = JSON.parse(announces.read)
   servers.keys.each do |server_name|
     model = ModelFactory.generate_model(server_name,servers[server_name])
-    Proctor.write_tests(model,Settings[:test_dir])
+    Proctor.write_tests(model, Settings[:test_dir])
   end
 end
 
