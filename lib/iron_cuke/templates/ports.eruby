@@ -8,6 +8,6 @@ Feature: Checking Ports
       | port | host |
    <%- # FIXME: Did the simplest thing that could work, here.  %>
    <%- # Correct solution is to get hostname via announcement. %>
-   <% @ports.each do |port| %>
-      | <%= port[:port] %> | <%= `hostname -f`.delete("\n") %> |
+   <% @ports.each do |name, port| %>
+      | <%= port['port'] %> | <%= `hostname -f`.delete("\n") %> |
    <% end %>

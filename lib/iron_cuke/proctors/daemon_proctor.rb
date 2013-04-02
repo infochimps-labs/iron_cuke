@@ -1,5 +1,9 @@
 module Proctor
-  class DaemonProctor < CollectionProctor
-    self.register_proctor
+  class DaemonProctor < BaseProctor
+    
+    def aspect_handle
+      'daemons' 
+    end
+
   end
 end

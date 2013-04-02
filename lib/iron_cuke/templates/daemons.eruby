@@ -6,6 +6,6 @@ Feature: Checking Ports
   Scenario: The proper processes are running
     Then these processes are running:
       | name | owner |
-   <% @daemons.each do |daemon| %>
-      | <%= daemon[:name] -%> | <%= daemon[:user] -%> |
+   <% @daemons.each do |name, daemon| %>
+      | <%= daemon['name'] -%> | <%= daemon['user'] -%> |
    <% end %>

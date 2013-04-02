@@ -8,7 +8,6 @@ group :get_announces do
 end
 
 group :gen_tests do
-  gem 'gorillib', :git => 'git://github.com/infochimps-labs/gorillib.git', :branch => 'version_1'
   gem 'erubis'
 end
 

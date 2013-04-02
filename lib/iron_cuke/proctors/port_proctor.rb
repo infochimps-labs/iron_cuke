@@ -1,5 +1,9 @@
-module Proctor
-  class PortProctor < CollectionProctor
-    self.register_proctor
+module IronCuke
+  module Proctor
+    class PortProctor < DefaultProctor
+      def write_test(component)
+
+      end
+    end
   end
 end
