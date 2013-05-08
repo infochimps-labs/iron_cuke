@@ -5,7 +5,7 @@ module Silverware
 
   class PortAspect < Aspect
     field :port,     Integer
-    field :bindaddr, String
+    field :addrs,    Array
     field :protocol, Symbol
 
     # field :monitor, PortMonitorHint

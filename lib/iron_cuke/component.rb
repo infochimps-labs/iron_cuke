@@ -1,5 +1,5 @@
 module Silverware
-  
+
   # declare the classes so we can refer to them; actual code is below
   class PortCollection      < Gorillib::ModelCollection ; end
   class DaemonCollection    < Gorillib::ModelCollection ; end
@@ -57,7 +57,7 @@ module Silverware
   class Server
     attr_accessor :name
     attr_accessor :components
-    
+
     def initialize
       @components = []
       super
