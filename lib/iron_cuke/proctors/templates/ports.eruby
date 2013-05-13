@@ -7,5 +7,5 @@ Feature: Checking Ports
     Then these ports are open:
       | port | host |
    <% @ports.each do |port| %>
-      | <%= port[:port] %> | <%= port[:addrs].first rescue 'localhost' %> |
+      | <%= port[:port] %> | <%= port[:addrs].first rescue `hostname -f` %> |
    <% end %>
