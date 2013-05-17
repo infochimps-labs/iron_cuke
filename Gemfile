@@ -8,7 +8,7 @@ group :get_announces do
 end
 
 group :gen_tests do
-  gem 'gorillib', '~> 0.4.2'
+  gem 'gorillib', '~> 0.5.0'
   gem 'erubis'
 end
 
