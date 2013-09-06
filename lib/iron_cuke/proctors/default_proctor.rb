@@ -8,19 +8,15 @@ module IronCuke
   module Proctor
     class DefaultProctor < BaseProctor
 
-      # Allow creator to define the template name
-      def initialize template_name
-        @template_name = template_name
-      end
-
-      def template_name
-        @template_name
+      def initialize aspect
+        @aspect = aspect
       end
 
       def write_test component
         component.each { |name, value| instance_variable_set("@#{name}", value) }
         write
       end
+
     end
   end
 end

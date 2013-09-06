@@ -9,5 +9,5 @@ Feature: Checking Ports
    <%- # FIXME: Did the simplest thing that could work, here.  %>
    <%- # Correct solution is to get hostname via announcement. %>
    <% @ports.each do |name, port| %>
-      | <%= port['port'] %> | <%= `hostname -f`.delete("\n") %> |
+      | <%= port %> | <%= `hostname -f`.delete("\n") %> |
    <% end %>
