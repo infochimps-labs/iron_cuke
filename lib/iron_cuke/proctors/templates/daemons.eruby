@@ -2,10 +2,10 @@ Feature: Checking Ports
   In order to test the <%= "#{@sys}-#{@subsys}" %> component
   As a system administrator
   I want to examine the processes of node <%= @server %>
-        
+
   Scenario: The proper processes are running
     Then these processes are running:
-      | name | owner |
+      | name | owner | cmd_line_match |
    <% @daemons.each do |daemon| %>
-      | <%= daemon[:name] -%> | <%= daemon[:user] -%> |
+      | <%= daemon[:name] -%> | <%= daemon[:user] -%> | <%= daemon[:cmd] -%> |
    <% end %>

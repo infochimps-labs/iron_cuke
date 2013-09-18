@@ -7,7 +7,7 @@ module Proctor
 
   # Iterates over all components in the server
   # and lets each proctor have a chance to render tests
-  # for the component. Tests will be deposited in 
+  # for the component. Tests will be deposited in
   # outdir/server-name/component-name/aspect.feature
   def self.write_tests(server, outdir)
     server_dir = [outdir, server.name].join('/')
@@ -15,7 +15,7 @@ module Proctor
       comp_dir = [server_dir, component.fullname].join('/')
       Proctor::PROCTORS.each do |proctor|
         puts "Rendering template for #{server.name} - #{component.fullname} : #{proctor.aspect_handle} aspect"
-        proctor.write_test(component,comp_dir) 
+        proctor.write_test(component,comp_dir)
       end
     end
   end
@@ -27,14 +27,14 @@ module Proctor
     def self.register_proctor
       Proctor::PROCTORS << self.new
     end
-  
+
     # The name of the aspect this proctor is concerned with.
     # By default, proctors classes should be named <Aspect>Proctor
     # and <Aspect> will become the class's aspect handle.
     def aspect_handle
       @aspect_handle ||= self.class.name.split('::').last.gsub(/Proctor/,'').downcase
     end
-   
+
     # Returns the erubis template for this proctor.
     # By default it is loaded from proctors/templates/<aspect_handle>.eruby
     def template
@@ -55,7 +55,7 @@ module Proctor
 
   # Extends default behavior for proctors of collections of things
   class CollectionProctor < BaseProctor
-    
+
     # This allows collection proctor classes to omit the pluralizing 's'
     # e.g. PortProctor is responsible for the ports aspect
     def aspect_handle

@@ -2,12 +2,10 @@ Feature: Checking Ports
   In order to test the <%= "#{@sys}-#{@subsys}" %> component
   As a system administrator
   I want to examine the ports of node <%= @server %>
-        
+
   Scenario: The proper ports are open
     Then these ports are open:
       | port | host |
-   <%- # FIXME: Did the simplest thing that could work, here.  %>
-   <%- # Correct solution is to get hostname via announcement. %>
    <% @ports.each do |port| %>
-      | <%= port[:port] %> | <%= `hostname -f`.delete("\n") %> |
+      | <%= port[:port] %> | <%= port[:addrs].first rescue `hostname -f`.strip %> |
    <% end %>
