@@ -83,7 +83,7 @@ end
 def clean_announces
   puts "Deleting announces cache at '#{Settings[:announces_file]}'..."
   begin
-    File.delete(Settings[:announces_file]) 
+    File.delete(Settings[:announces_file])
   rescue Errno::ENOENT
     puts "'#{Settings[:announces_file]}' doesn't exist. Skipping..."
   end
