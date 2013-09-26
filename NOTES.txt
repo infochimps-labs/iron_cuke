@@ -1,0 +1,32 @@
+- Should be able to just dump a erb file into lib/templates and have it work
+  - default proctor should just instancevar-ify top-level component hash members
+    so you can do @ports or @daemons, etc... in your test
+  - there can only be one proctor per test template. If there isn't one, the default
+    proctor will be used instead
+  - proctors register to handle templates by defining template_name. Defaults to 
+    something pulled from the class name
+  - proctors can also choose to not render anything, via a guard function
+    - Guard function?
+
+  - Way proctors are loaded:
+    has map from aspect_handle to proctor instances, starts empty
+    when render is called, checks if there is a proctor for that aspect_handle
+    if there is, use it
+    if not, checks if one exists
+      if so, instantiates it
+      if not, uses the default proctor
+
+
+- Should be able to optionally define a proctor class that mediates the rendering
+  of the test
+  - Should not reload the class or re-instantiate it between render calls
+
+API: protor.write_test(component), returns string
+
+  class PortProctor
+
+    def write_test(component)
+      # assign instance vars
+    end
+    
+  end

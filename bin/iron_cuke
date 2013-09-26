@@ -58,9 +58,8 @@ def gen_tests
   puts "Generating tests from announcements at '#{Settings[:announces_file]}' and depositing them in '#{Settings[:test_dir]}'..."
   announces = File.open(Settings[:announces_file],'r')
   servers = JSON.parse(announces.read)
-  servers.keys.each do |server_name|
-    model = ModelFactory.generate_model(server_name,servers[server_name])
-    Proctor.write_tests(model, Settings[:test_dir])
+  servers.each do |server_name, components|
+    IronCuke::Proctor.write_tests(server_name, components, Settings[:test_dir])
   end
 end
 
