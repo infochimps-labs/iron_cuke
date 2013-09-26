@@ -6,6 +6,6 @@ Feature: Checking Ports
   Scenario: The proper ports are open
     Then these ports are open:
       | port | host |
-   <% @ports.each do |port| %>
-      | <%= port[:port] %> | <%= port[:addrs].first rescue `hostname -f`.strip %> |
+   <% @ports.each do |name, port| %>
+      | <%= port %> | <%= `hostname -f`.delete("\n") %> |
    <% end %>
