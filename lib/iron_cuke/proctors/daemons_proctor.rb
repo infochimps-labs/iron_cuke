@@ -23,7 +23,7 @@ module IronCuke
              @daemons << {'name' => daemon['name'], 'user' => daemon['user']}
            end
         end
-        write
+        write component
       end
 
     end

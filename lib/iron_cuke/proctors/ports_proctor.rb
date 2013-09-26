@@ -24,7 +24,7 @@ module IronCuke
             @ports[key] = val['port']
           end
         end
-        write
+        write component
       end
 
     end

@@ -14,7 +14,7 @@ module IronCuke
 
       def write_test component
         component.each { |name, value| instance_variable_set("@#{name}", value) }
-        write
+        write component
       end
 
     end

@@ -1,7 +1,7 @@
 Feature: Checking Daemons
   In order to test the <%= "#{@sys}-#{@subsys}" %> component
   As a system administrator
-  I want to examine the processes of node <%= @server %>
+  I want to examine the processes of this node
 
   Scenario: The proper processes are running
     Then these processes are running:

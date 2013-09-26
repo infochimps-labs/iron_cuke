@@ -34,12 +34,14 @@ module IronCuke
         result
       end
 
-      def write
+      def write(component)
+        @sys = component["sys"]
+        @subsys = component["subsys"]
         template.result(binding())
       end
 
       def write_test(component)
-        write
+        write component
       end
     end
   end
