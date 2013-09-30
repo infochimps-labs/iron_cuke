@@ -5,7 +5,6 @@ module IronCuke
       def write_test(component)
         @logs = []
         component['logs'].each do |key, val|
-          puts "Logs key #{key} is #{val}"
 
           if val.is_a? Hash
             if val['glob']
