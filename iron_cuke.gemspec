@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "iron_cuke"
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dieterich Lawson", "Infochimps"]
-  s.date = "2013-05-17"
+  s.date = "2013-09-27"
   s.description = "Test your apps on the surface that matters: the interface they specify to the network\n"
   s.email = "coders@infochimps.org"
   s.extra_rdoc_files = [
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
     ".rspec",
     "Gemfile",
     "Guardfile",
+    "NOTES.txt",
     "README.md",
     "Rakefile",
     "VERSION",
@@ -26,22 +27,21 @@ Gem::Specification.new do |s|
     "features/support/env.rb",
     "iron_cuke.gemspec",
     "lib/iron_cuke.rb",
-    "lib/iron_cuke/aspect.rb",
-    "lib/iron_cuke/base.rb",
-    "lib/iron_cuke/component.rb",
-    "lib/iron_cuke/model_factory.rb",
     "lib/iron_cuke/proctor.rb",
-    "lib/iron_cuke/proctors/daemon_proctor.rb",
-    "lib/iron_cuke/proctors/port_proctor.rb",
-    "lib/iron_cuke/proctors/templates/daemons.eruby",
-    "lib/iron_cuke/proctors/templates/ports.eruby",
+    "lib/iron_cuke/proctors/base_proctor.rb",
+    "lib/iron_cuke/proctors/logs_proctor.rb",
+    "lib/iron_cuke/proctors/daemons_proctor.rb",
+    "lib/iron_cuke/proctors/default_proctor.rb",
+    "lib/iron_cuke/proctors/ports_proctor.rb",
+    "lib/iron_cuke/templates/daemons.eruby",
+    "lib/iron_cuke/templates/ports.eruby",
     "spec/iron_cuke_spec.rb",
     "spec/spec_helper.rb"
   ]
   s.homepage = "https://github.com/infochimps-labs/iron_cuke"
   s.licenses = ["Apache 2.0"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.23"
+  s.rubygems_version = "1.8.24"
   s.summary = "Bulletproof testing when the machine is the app"
 
   if s.respond_to? :specification_version then

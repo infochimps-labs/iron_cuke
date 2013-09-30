@@ -32,7 +32,9 @@ module IronCuke
           instance = proctor_class.new
           @@proctors[instance.aspect] = proctor_class.new
         end
-        template_names.each { |template| @@proctors[template] ||= DefaultProctor.new template }
+        template_names.each { |template| 
+          @@proctors[template] ||= DefaultProctor.new template 
+        }
       end
       @@proctors
     end
@@ -57,6 +59,7 @@ module IronCuke
           next unless proctor_for(template).will_write?(component)
           puts "Rendering the '#{template}' test for #{server_name} - #{comp_name}"
           test = proctor_for(template).write_test(component) 
+          
           # create the parent dir if it doesn't exist
           FileUtils.mkdir_p(comp_dir) unless File.directory?(comp_dir) 
           # write the file itself
