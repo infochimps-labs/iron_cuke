@@ -14,6 +14,7 @@ end
 group :run_test do
   gem 'cucumber'
   gem 'cuken', :git => 'git://github.com/infochimps-forks/cuken.git'
+  gem 'aruba'
 end
 
 # --------------------------------------------------------------------------
