@@ -20,7 +20,7 @@ module IronCuke
         @daemons = []
         component['daemons'].each do |name, daemon|
            if daemon['name'] != nil && daemon['user'] != nil
-             @daemons << {'name' => daemon['name'], 'user' => daemon['user']}
+             @daemons << {'name' => daemon['name'], 'user' => daemon['user'], 'cmd' => daemon['cmd'] }
            end
         end
         write component
