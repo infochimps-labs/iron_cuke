@@ -64,7 +64,7 @@ describe IronCuke do
     end
 
     it 'cucumber test output contains daemon component' do
-      daemons_proctor.write_test(mongo_component).should =~ /mongod/
+      daemons_proctor.write_test(mongo_component).should =~ /| mongod | mongodb | mongod |/
     end
 
   end
