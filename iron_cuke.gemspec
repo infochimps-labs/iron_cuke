@@ -48,17 +48,16 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<configliere>, [">= 0"])
-      s.add_runtime_dependency(%q<rspec>, [">= 2.8"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.1"])
-      s.add_development_dependency(%q<rake>, [">= 0"])
-      s.add_development_dependency(%q<yard>, [">= 0.7"])
-      s.add_development_dependency(%q<jeweler>, [">= 1.6"])
-      s.add_runtime_dependency(%q<chef>, [">= 0.10.4"])
-      s.add_runtime_dependency(%q<gorillib>, [">= 0.4"])
-      s.add_runtime_dependency(%q<erubis>, [">= 0"])
-      s.add_runtime_dependency(%q<cucumber>, [">= 0"])
-      s.add_runtime_dependency(%q<cuken>, [">= 0"])
+      s.add_runtime_dependency(%q<configliere>, ["0.4.18"])
+      s.add_runtime_dependency(%q<rspec>, ["2.14.1"])
+      s.add_development_dependency(%q<rake>, ["10.1.1"])
+      s.add_development_dependency(%q<yard>, ["0.8.7.3"])
+      s.add_development_dependency(%q<jeweler>, ["2.0.0"])
+      s.add_runtime_dependency(%q<chef>, ["10.16.6"])
+      s.add_runtime_dependency(%q<gorillib>, ["0.5.0"])
+      s.add_runtime_dependency(%q<erubis>, ["2.7.0"])
+      s.add_runtime_dependency(%q<cucumber>, ["1.3.10"])
+      s.add_runtime_dependency(%q<aruba>, ["0.5.4"])
     else
       s.add_dependency(%q<configliere>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 2.8"])

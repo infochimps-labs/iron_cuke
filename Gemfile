@@ -1,31 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'configliere'
-gem 'rspec',       '>= 2.8',   :require => false
-
-group :get_announces do
-  gem 'chef',      '~> 10.16.4'
-end
-
-group :gen_tests do
-  gem 'erubis'
-end
+gemspec
 
 group :run_test do
-  gem 'cucumber'
   gem 'cuken', :git => 'git://github.com/infochimps-forks/cuken.git'
-  gem 'aruba'
 end
 
 # --------------------------------------------------------------------------
-
-# Only gems that you want listed as development dependencies in the gemspec
-group :development do
-  gem 'bundler',     '~> 1.1'
-  gem 'rake',                    :require => false
-  gem 'yard',        '>= 0.7',   :require => false
-  gem 'jeweler',     '>= 1.6',   :require => false
-end
 
 group :docs do
   gem 'redcarpet',   '>= 2.1',   :platform => [:ruby]
