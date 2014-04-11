@@ -1,6 +1,5 @@
 Feature: Checking Ports
   In order to test the <%= "#{@sys}-#{@subsys}" %> component
-  As a system administrator
   I want to examine the ports of this node
 
   Scenario: The proper ports are open

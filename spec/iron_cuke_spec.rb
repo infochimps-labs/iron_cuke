@@ -69,4 +69,21 @@ describe IronCuke do
 
   end
 
+  describe "DaemonServiceProctor" do
+    let(:daemons_proctor) { IronCuke::Proctor.proctor_for("daemons") }
+
+    let(:announces) { JSON.parse(File.read("spec/service_announces.json")) }
+    let(:splunk_web_component) { announces["p1master-control-splunk-0"]["p1master-splunk-web"] }
+
+    it 'will write a present daemon component' do
+      daemons_proctor.will_write?(splunk_web_component).should == true
+    end
+
+    it 'cucumber test output contains daemon service component' do
+      daemons_proctor.write_test(splunk_web_component).should =~ /sudo service splunk_web status/
+    end
+
+
+  end
+
 end

@@ -1,6 +1,5 @@
 Feature: Checking Logs
   In order to test the <%= "#{@sys}-#{@subsys}" %> component
-  As a system administrator
   I want to examine the logs of this node
 
   Scenario: The proper log files exist

@@ -1,0 +1,9 @@
+Feature: Checking Daemon Service
+  In order to test the <%= "#{@sys}-#{@subsys}" %> component
+  I want to examine the processes of this node
+
+  Scenario: The proper services are running
+   <% @daemons.each do |daemon| %>
+     When I run `sudo service <%= daemon["service"] %> status`
+     Then the output should match /^run/
+   <% end %>

@@ -1,27 +1,47 @@
 module IronCuke
   module Proctor
     class DaemonsProctor < BaseProctor
-   
-      # Awkward, also duplicates code, also breaks Zabbix announcements
-      # TODO: Figure out a better way to check if there is a valid daemon
-      # announcement.
-      # TODO: Fix Zabbix announcements
+
+      # There's two forms of daemon announcements:
+      # The raw process form
+      # "daemons" : {
+      #    "mongod" : {
+      #       "cmd" : "mongod",
+      #       "user" : "mongodb",
+      #       "name" : "mongod"
+      #    }
+      # }
+      # and the shortcut init.d service form
+      # "daemons" : {
+      #   "web" : {
+      #     "service" : "splunk_web"
+      #   }
+      # }
+
+      # FIXME: This takes an all or nothing approach
       def will_write?(component)
-        return false if component['daemons'] == nil || component['daemons'] == {}
-        component['daemons'].each do |name, daemon|
-           if daemon['name'] != nil && daemon['user'] != nil
-             return true
-           end
+        if (component['daemons'] != nil && component['daemons'] != {})
+          component['daemons'].inject(true) do |writes, kv|
+            name, daemon = kv
+            if %w(cmd user name).all? { |k| daemon.has_key?(k) } || daemon.has_key?("service")
+              writes &= true 
+            end
+          end
+        else
+          false
         end
-        return false
       end
 
       def write_test(component)
         @daemons = []
         component['daemons'].each do |name, daemon|
-           if daemon['name'] != nil && daemon['user'] != nil
-             @daemons << {'name' => daemon['name'], 'user' => daemon['user'], 'cmd' => daemon['cmd'] }
-           end
+          if %w(cmd user name).all? { |k| daemon.has_key?(k) } # explicit form
+            @daemons << {'name' => daemon['name'], 'user' => daemon['user'], 'cmd' => daemon['cmd'] }
+          elsif daemon.has_key?('service') #service form
+            @template = nil
+            @aspect   = "daemonservice" #override proctor
+            @daemons << {'name' => name, 'service' => daemon['service'] }
+          end
         end
         write component
       end
