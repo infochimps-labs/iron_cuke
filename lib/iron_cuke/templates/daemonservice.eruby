@@ -5,5 +5,5 @@ Feature: Checking Daemon Service
   Scenario: The proper services are running
    <% @daemons.each do |daemon| %>
      When I run `sudo service <%= daemon["service"] %> status`
-     Then the output should match /^run/
+     Then the output should match /(^run|is running)/
    <% end %>
