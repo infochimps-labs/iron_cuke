@@ -21,12 +21,17 @@ module IronCuke
       # FIXME: This takes an all or nothing approach
       def will_write?(component)
         if (component['daemons'] != nil && component['daemons'] != {})
-          component['daemons'].inject(true) do |writes, kv|
+          is_daemon = component['daemons'].inject([]) do |writes, kv|
             name, daemon = kv
-            if %w(cmd user name).all? { |k| daemon.has_key?(k) } || daemon.has_key?("service")
-              writes &= true 
+            if daemon.is_a?(Hash) &&
+                (%w(cmd user name).all? { |k| daemon.has_key?(k) } || daemon.has_key?("service"))
+              writes << true
+            else
+              writes << false
             end
+            writes
           end
+          is_daemon.all?
         else
           false
         end

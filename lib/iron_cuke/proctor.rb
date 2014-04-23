@@ -43,7 +43,7 @@ module IronCuke
     # Will return the default proctor if no other suitable one
     # is found.
     def self.proctor_for(template_name)
-      proctors[template_name]
+      proctors[template_name.to_s]
     end
 
     # Iterates over all components in the server

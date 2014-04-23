@@ -8,9 +8,14 @@ describe IronCuke do
 
   describe IronCuke::Proctor::LogsProctor do
     let(:log_proctor) { IronCuke::Proctor.proctor_for("logs") }
+    let(:log_sym_proctor) { IronCuke::Proctor.proctor_for(:logs) }
 
     it 'loads the correct proctor class' do
       log_proctor.class.should == IronCuke::Proctor::LogsProctor
+    end
+
+    it 'loads the correct proctor class with symbol arg' do
+      log_sym_proctor.class.should == IronCuke::Proctor::LogsProctor
     end
 
     it 'skips log components that are incomplete' do
@@ -50,13 +55,18 @@ describe IronCuke do
 
   describe IronCuke::Proctor::DaemonsProctor do
     let(:daemons_proctor) { IronCuke::Proctor.proctor_for("daemons") }
+    let(:incomplete_daemon_component) { {"daemons" => {"mongod" => {"user" => "mongodb","name" => "mongod"}}} }
 
     it 'loads the correct proctor class' do
       daemons_proctor.class.should == IronCuke::Proctor::DaemonsProctor
     end
 
-    it 'skips daemon components that are incomplete' do
+    it 'skips daemon components that are empty' do
       daemons_proctor.will_write?(empty_component).should == false
+    end
+
+    it 'skips daemon components that are incomplete' do
+      daemons_proctor.will_write?(incomplete_daemon_component).should == false
     end
 
     it 'will write a present daemon component' do
@@ -74,9 +84,14 @@ describe IronCuke do
 
     let(:announces) { JSON.parse(File.read("spec/service_announces.json")) }
     let(:splunk_web_component) { announces["p1master-control-splunk-0"]["p1master-splunk-web"] }
+    let(:bad_daemon_component) { {'daemons' => { 'web' => 'splunk_web'}} } #missing "service":
 
     it 'will write a present daemon component' do
       daemons_proctor.will_write?(splunk_web_component).should == true
+    end
+
+    it 'skips daemon components that are incomplete' do
+      daemons_proctor.will_write?(bad_daemon_component).should == false
     end
 
     it 'cucumber test output contains daemon service component' do
