@@ -6,6 +6,12 @@ group :run_test do
   gem 'cuken', :git => 'git://github.com/infochimps-forks/cuken.git'
 end
 
+group :http_tests do
+  gem 'capybara'
+  gem 'capybara-webkit'
+  gem 'headless'
+end
+
 # --------------------------------------------------------------------------
 
 group :docs do

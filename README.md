@@ -1,11 +1,3 @@
-# Ironcuke - Coming Soon
+# Ironcuke
 
-[![Build Status](https://secure.travis-ci.org/infochimps-labs/iron_cuke.png?branch=master)](http://travis-ci.org/infochimps-labs/iron_cuke)
-
-No-hassle testing for your infrastructure
-
-You use Chef to orchestrate your infrastructure. You have hundreds of lines of Chef code lying about in cookbooks, untested.
-
-What if you could be sure that your cookbooks had the desired effect? What if you could test that code?
-
-Ironcuke tests your Chef code by spinning up VMs and provisioning them with your cookbooks. Then, it tests that the cookbooks had the desired effects by generating Cucumber tests from Silverware announcements and running them on the VMs. All you have to do is include Silverware announcments in your cookbooks, and everything else is handled for you.
+# [capybara-webkit](https://github.com/thoughtbot/capybara-webkit) requires the `libqtwebkit-dev` package and an X-server to run on Linux.  ForX-server, install `xvfb` which is automatically configured via the [headless](https://github.com/leonid-shevtsov/headless) gem.  The capybara-webkit README gives detailed instructions for installing qt on different platforms [here](https://github.com/thoughtbot/capybara-webkit/wiki/Installing-Qt-and-compiling-capybara-webkit).
