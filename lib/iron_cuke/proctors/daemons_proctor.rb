@@ -41,14 +41,19 @@ module IronCuke
         @daemons = []
         component['daemons'].each do |name, daemon|
           if %w(cmd user name).all? { |k| daemon.has_key?(k) } # explicit form
+            set_aspect('daemons')
             @daemons << {'name' => daemon['name'], 'user' => daemon['user'], 'cmd' => daemon['cmd'] }
           elsif daemon.has_key?('service') #service form
-            @template = nil
-            @aspect   = "daemonservice" #override proctor
+            set_aspect('daemonservice')
             @daemons << {'name' => name, 'service' => daemon['service'] }
           end
         end
         write component
+      end
+
+      def set_aspect aspect
+        @template = nil
+        @aspect   = aspect
       end
 
     end
