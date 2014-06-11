@@ -8,7 +8,7 @@ end
 
 group :http_tests do
   gem 'capybara'
-  gem 'capybara-webkit'
+  gem 'selenium-webdriver'
   gem 'headless'
 end
 
